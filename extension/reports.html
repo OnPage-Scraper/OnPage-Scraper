@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnPage.dev - Reports</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="reports.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <h1 class="logo-text">OnPage</h1>
+                    <span class="subtitle">Reports Dashboard</span>
+                </div>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <span id="userEmail" class="user-email"></span>
+                        <button id="logoutBtn" class="btn btn-secondary btn-sm">Sign Out</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalReports">0</div>
+                            <div class="stat-label">Reports</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="totalItems">0</div>
+                            <div class="stat-label">Data Items</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🌐</div>
+                        <div class="stat-content">
+                            <div class="stat-number" id="uniqueDomains">0</div>
+                            <div class="stat-label">Domains</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Filters and Search -->
+                <div class="filters-section">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search reports by name, URL, or domain..." class="search-input">
+                        <button class="search-btn" id="searchBtn">
+                            <span class="icon">🔍</span>
+                        </button>
+                        <button class="clear-search-btn" id="clearSearchBtn" style="display: none;">
+                            <span class="icon">×</span>
+                        </button>
+                    </div>
+                    <div class="filter-controls">
+                        <div class="filter-group">
+                            <label class="filter-label">Domain:</label>
+                            <select id="domainFilter" class="filter-select">
+                                <option value="">All Domains</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Date:</label>
+                            <select id="dateFilter" class="filter-select">
+                                <option value="">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Sort by:</label>
+                            <select id="sortFilter" class="filter-select">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="name">Name A-Z</option>
+                                <option value="items">Most Items</option>
+                            </select>
+                        </div>
+                        <button id="refreshBtn" class="btn btn-primary">
+                            <span class="icon">↻</span>
+                            Refresh
+                        </button>
+                        <button id="clearFiltersBtn" class="btn btn-secondary">
+                            <span class="icon">⊗</span>
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enhanced Reports List -->
+                <div class="reports-section">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h2>Reports</h2>
+                            <span id="reportsCount" class="reports-count">0 reports</span>
+                        </div>
+                        <div class="header-controls">
+                            <div class="bulk-controls" id="bulkControls" style="display: none;">
+                                <div class="bulk-selection">
+                                    <label class="select-all-checkbox">
+                                        <input type="checkbox" id="selectAllCheckbox">
+                                        <span class="checkmark"></span>
+                                        <span class="label">Select All</span>
+                                    </label>
+                                    <span id="selectedCount" class="selected-count">0 selected</span>
+                                </div>
+                                <div class="bulk-actions">
+                                    <button id="bulkExportBtn" class="btn btn-primary btn-sm">
+                                        <span class="icon">📥</span>
+                                        Export Selected
+                                    </button>
+                                    <button id="bulkDeleteBtn" class="btn btn-danger btn-sm">
+                                        <span class="icon">🗑️</span>
+                                        Delete Selected
+                                    </button>
+                                    <button id="cancelBulkBtn" class="btn btn-secondary btn-sm">
+                                        <span class="icon">×</span>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="normal-controls" id="normalControls">
+                                <button id="bulkSelectBtn" class="btn btn-secondary btn-sm">
+                                    <span class="icon">☑️</span>
+                                    Multi-Select
+                                </button>
+                                <div class="view-controls">
+                                    <button id="gridViewBtn" class="view-btn active" data-view="grid" title="Grid View">
+                                        <span class="icon">⊞</span>
+                                    </button>
+                                    <button id="listViewBtn" class="view-btn" data-view="list" title="List View">
+                                        <span class="icon">☰</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="reportsList" class="reports-list grid-view">
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                            <p>Loading reports...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Enhanced Report Detail Modal -->
+        <div id="reportModal" class="modal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">
+                        <h3 id="modalTitle">Report Details</h3>
+                        <span id="modalSubtitle" class="modal-subtitle"></span>
+                    </div>
+                    <div class="modal-actions">
+                        <div class="dropdown" id="exportDropdown">
+                            <button id="exportModalBtn" class="btn btn-primary">
+                                <span class="icon">📥</span>
+                                Export
+                                <span class="dropdown-arrow">▼</span>
+                            </button>
+                            <div class="dropdown-menu" id="exportDropdownMenu">
+                                <button class="dropdown-item" data-format="csv">
+                                    <span class="icon">📄</span>
+                                    Export as CSV
+                                </button>
+                                <button class="dropdown-item" data-format="json">
+                                    <span class="icon">📋</span>
+                                    Export as JSON
+                                </button>
+                                <button class="dropdown-item" data-format="excel">
+                                    <span class="icon">📊</span>
+                                    Export as Excel
+                                </button>
+                            </div>
+                        </div>
+                        <button id="deleteModalBtn" class="btn btn-danger">
+                            <span class="icon">🗑️</span>
+                            Delete
+                        </button>
+                        <button id="closeModalBtn" class="close-btn">&times;</button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="report-details">
+                        <div class="detail-section">
+                            <div class="section-header">
+                                <h4>Report Information</h4>
+                                <div class="section-actions">
+                                    <button id="copyUrlBtn" class="btn btn-text btn-sm">
+                                        <span class="icon">📋</span>
+                                        Copy URL
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="detail-grid">
+                                <div class="detail-item">
+                                    <label>Name:</label>
+                                    <span id="detailName" class="detail-value">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>URL:</label>
+                                    <span id="detailUrl" class="detail-value url-value">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Created:</label>
+                                    <span id="detailCreated" class="detail-value">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Items:</label>
+                                    <span id="detailItems" class="detail-value">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <label>Size:</label>
+                                    <span id="detailSize" class="detail-value">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <div class="section-header">
+                                <h4>Selectors Used</h4>
+                                <span id="selectorsCount" class="count-badge">0</span>
+                            </div>
+                            <div id="detailSelectors" class="selectors-list">
+                                <!-- Selectors will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <div class="section-header">
+                                <h4>Data Preview</h4>
+                                <div class="section-actions">
+                                    <span class="preview-note">Export to view complete data</span>
+                                </div>
+                            </div>
+                            <div id="detailData" class="data-preview">
+                                <!-- Sample data will be shown here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="confirmModal" class="modal confirmation-modal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content small">
+                <div class="modal-header">
+                    <h3 id="confirmTitle">Confirm Action</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="confirm-content">
+                        <div class="confirm-icon" id="confirmIcon">⚠️</div>
+                        <div class="confirm-message">
+                            <p id="confirmMessage">Are you sure you want to proceed?</p>
+                            <p id="confirmDetails" class="confirm-details"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirmCancelBtn" class="btn btn-secondary">Cancel</button>
+                    <button id="confirmActionBtn" class="btn btn-danger">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Progress Modal -->
+        <div id="exportModal" class="modal progress-modal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content small">
+                <div class="modal-header">
+                    <h3>Exporting Reports</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="progress-content">
+                        <div class="progress-info">
+                            <span id="exportStatus">Preparing export...</span>
+                            <span id="exportProgress">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="exportProgressBar" class="progress-fill"></div>
+                        </div>
+                        <div class="export-details">
+                            <span id="exportCount">0 reports</span>
+                            <span id="exportFormat">CSV</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelExportBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modern Export Modal -->
+        <div id="modernExportModal" class="modal export-modal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Export Reports</h3>
+                    <button class="modal-close" id="closeExportModal">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="export-options">
+                        <div class="export-section">
+                            <h4>📋 Selected Reports</h4>
+                            <div id="exportReportsList" class="export-reports-list">
+                                <!-- Reports list will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="export-section">
+                            <h4>📄 Format Options</h4>
+                            <div class="format-options">
+                                <label class="format-option">
+                                    <input type="radio" name="exportFormat" value="csv" checked>
+                                    <div class="format-card">
+                                        <div class="format-icon">📊</div>
+                                        <div class="format-info">
+                                            <div class="format-name">CSV</div>
+                                            <div class="format-desc">Excel compatible spreadsheet</div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="format-option">
+                                    <input type="radio" name="exportFormat" value="json">
+                                    <div class="format-card">
+                                        <div class="format-icon">🔗</div>
+                                        <div class="format-info">
+                                            <div class="format-name">JSON</div>
+                                            <div class="format-desc">Structured data format</div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label class="format-option">
+                                    <input type="radio" name="exportFormat" value="combined">
+                                    <div class="format-card">
+                                        <div class="format-icon">📦</div>
+                                        <div class="format-info">
+                                            <div class="format-name">Combined ZIP</div>
+                                            <div class="format-desc">Both formats in archive</div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="export-section">
+                            <h4>⚙️ Export Settings</h4>
+                            <div class="export-settings">
+                                <label class="setting-option">
+                                    <input type="checkbox" id="includeMetadata" checked>
+                                    <span class="checkmark"></span>
+                                    Include metadata (date, url, etc.)
+                                </label>
+                                <label class="setting-option">
+                                    <input type="checkbox" id="compressData">
+                                    <span class="checkmark"></span>
+                                    Compress large files
+                                </label>
+                                <label class="setting-option">
+                                    <input type="checkbox" id="separateFiles">
+                                    <span class="checkmark"></span>
+                                    Export as separate files
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="startExportBtn" class="btn btn-primary">
+                        <span class="icon">📥</span>
+                        Start Export
+                    </button>
+                    <button id="cancelExportModalBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Progress Modal -->
+        <div id="exportProgressModal" class="modal progress-modal" style="display: none;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content small">
+                <div class="modal-header">
+                    <h3>Exporting...</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="progress-container">
+                        <div class="progress-info">
+                            <div class="progress-status" id="exportProgressStatus">Preparing export...</div>
+                            <div class="progress-percentage" id="exportProgressPercent">0%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="exportProgressFill"></div>
+                        </div>
+                        <div class="progress-details" id="exportProgressDetails">
+                            Starting export process...
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelExportProgressBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toastContainer" class="toast-container">
+            <!-- Toasts will be dynamically added here -->
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script src="services/AuthService.js"></script>
+    <script src="services/ReportService.js"></script>
+    <script src="utils/CSVUtils.js"></script>
+    <script src="utils/JSONUtils.js"></script>
+    <script src="reports.js"></script>
+</body>
+</html>

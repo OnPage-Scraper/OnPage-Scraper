@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnPage.dev Scraper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="magazine-layout">
+        <!-- Masthead Header -->
+        <header class="masthead">
+            <div class="masthead-main">
+                <h1 class="masthead-title">OnPage</h1>
+                <div class="masthead-subtitle">Web Intelligence Platform</div>
+            </div>
+            <div class="masthead-meta">
+                <div class="edition">Extension • v1.0</div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="page-nav" id="pageNav" style="display: none;">
+            <button class="nav-link active" data-page="home">Home</button>
+            <button class="nav-link" data-page="selectExtract">Setup & Extract</button>
+            <button class="nav-link" data-page="settings">Settings</button>
+            <button class="nav-link" id="reportsTabBtn">Reports</button>
+        </nav>
+
+        <!-- Auth Pages -->
+        <div id="loginForm" class="page auth-page">
+            <div class="editorial-grid">
+                <article class="main-story">
+                    <header class="story-header">
+                        <h2 class="headline">Access Your Account</h2>
+                        <p class="deck">Sign in to continue your web intelligence work</p>
+                    </header>
+                    
+                    <form id="loginFormElement" class="editorial-form">
+                        <div class="form-field">
+                            <label for="email" class="field-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="field-input" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="password" class="field-label">Password</label>
+                            <input type="password" id="password" name="password" class="field-input" required>
+                        </div>
+                        <button type="submit" class="cta-button">Sign In</button>
+                    </form>
+                    
+                    <footer class="story-footer">
+                        <p class="byline">New here? <a href="#" id="showRegister" class="link-underline">Create account</a></p>
+                    </footer>
+                </article>
+                
+                <section class="content-section">
+                    <div class="pull-quote">
+                        <blockquote>"Intelligent web data extraction"</blockquote>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div id="registerForm" class="page auth-page" style="display: none;">
+            <div class="editorial-grid">
+                <article class="main-story">
+                    <header class="story-header">
+                        <h2 class="headline">Join the Platform</h2>
+                        <p class="deck">Create your account to start intelligent web scraping</p>
+                    </header>
+                    
+                    <form id="registerFormElement" class="editorial-form">
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="regFirstName" class="field-label">First Name</label>
+                                <input type="text" id="regFirstName" name="firstName" class="field-input" required maxlength="50">
+                            </div>
+                            <div class="form-field">
+                                <label for="regLastName" class="field-label">Last Name</label>
+                                <input type="text" id="regLastName" name="lastName" class="field-input" required maxlength="50">
+                            </div>
+                        </div>
+                        
+                        <div class="form-field">
+                            <label for="regEmail" class="field-label">Email Address</label>
+                            <input type="email" id="regEmail" name="email" class="field-input" required>
+                        </div>
+                        
+                        <div class="form-field">
+                            <label for="regPassword" class="field-label">Password</label>
+                            <input type="password" id="regPassword" name="password" class="field-input" required minlength="6">
+                            <small class="field-hint">Minimum 6 characters</small>
+                        </div>
+                        
+                        <div class="form-field">
+                            <label for="regCompany" class="field-label">Company (Optional)</label>
+                            <input type="text" id="regCompany" name="company" class="field-input" maxlength="100">
+                        </div>
+                        
+                        <div class="form-field">
+                            <label for="regRole" class="field-label">Role</label>
+                            <select id="regRole" name="role" class="field-input">
+                                <option value="developer">Developer</option>
+                                <option value="data-analyst">Data Analyst</option>
+                                <option value="researcher">Researcher</option>
+                                <option value="business-owner">Business Owner</option>
+                                <option value="student">Student</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="cta-button">Create Account</button>
+                    </form>
+                    
+                    <footer class="story-footer">
+                        <p class="byline">Already registered? <a href="#" id="showLogin" class="link-underline">Sign in</a></p>
+                    </footer>
+                </article>
+                
+                <section class="content-section">
+                    <div class="feature-box">
+                        <h4 class="feature-title">Platform Features</h4>
+                        <ul class="feature-list">
+                            <li>AI-powered element selection</li>
+                            <li>Real-time data extraction</li>
+                            <li>Cloud report management</li>
+                            <li>Multi-format exports</li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Dashboard Pages -->
+        <div id="dashboard" class="page dashboard-page" style="display: none;">
+            <!-- Home Page -->
+            <div id="homePage" class="sub-page active">
+                <div class="editorial-grid">
+                    <article class="main-story">
+                        <header class="story-header">
+                            <h2 class="headline">Dashboard</h2>
+                            <p class="deck">Welcome back to your web intelligence workspace</p>
+                        </header>
+                        
+                        <div class="user-banner">
+                            <div class="user-info">
+                                <span class="user-label">Signed in as</span>
+                                <span id="userName" class="user-name"></span>
+                                <span id="userEmail" class="user-email"></span>
+                            </div>
+                            <div style="display: flex; gap: var(--space-8); align-items: center;">
+                                <button id="settingsBtn" class="icon-btn" title="Settings">
+                                    <span class="icon">⚙</span>
+                                </button>
+                                <button id="logoutBtn" class="logout-link">Sign out</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress indicator (hidden by default) -->
+                        <div id="progressContainer" class="progress-container" style="display: none;">
+                            <div class="progress-header">
+                                <div class="progress-icon">
+                                    <div class="scanning-indicator"></div>
+                                </div>
+                                <div class="progress-title" id="progressTitle">Scanning Page</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-status" id="progressStatus">Initializing scan...</div>
+                        </div>
+
+                        <!-- Summary card (hidden by default) -->
+                        <div id="summaryCard" class="summary-card" style="display: none;">
+                            <div class="summary-header">
+                                <div class="summary-icon">📊</div>
+                                <div class="summary-title">Scan Results</div>
+                                <button id="rescanBtn" class="icon-btn" title="Rescan">
+                                    <span class="icon">↻</span>
+                                </button>
+                            </div>
+                            <div class="summary-stats">
+                                <div class="summary-stat">
+                                    <div class="summary-stat-number" id="elementsCount">0</div>
+                                    <div class="summary-stat-label">Elements</div>
+                                </div>
+                                <div class="summary-stat">
+                                    <div class="summary-stat-number" id="extractableCount">0</div>
+                                    <div class="summary-stat-label">Extractable</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Guided Workflow -->
+                        <div class="workflow-container">
+                            <h3 class="section-title">Extraction Workflow</h3>
+                            
+                            <!-- Progress Steps -->
+                            <div class="workflow-steps">
+                                <div class="workflow-step" id="step1" data-step="1">
+                                    <div class="step-indicator">
+                                        <div class="step-number">1</div>
+                                        <div class="step-check">✓</div>
+                                    </div>
+                                    <div class="step-content">
+                                        <div class="step-title">Setup & Extract</div>
+                                        <div class="step-desc">Select elements and configure extraction</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="workflow-step" id="step2" data-step="2">
+                                    <div class="step-indicator">
+                                        <div class="step-number">2</div>
+                                        <div class="step-check">✓</div>
+                                    </div>
+                                    <div class="step-content">
+                                        <div class="step-title">View Reports</div>
+                                        <div class="step-desc">Open full reports page</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Current Step Action -->
+                            <div class="workflow-action">
+                                <button id="workflowBtn" class="cta-button">
+                                    <span class="icon">⚡</span>
+                                    <span id="workflowBtnText">Start: Setup & Extract</span>
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+                    
+                </div>
+            </div>
+
+            <!-- Combined Select & Extract Page -->
+            <div id="selectExtractPage" class="sub-page">
+                <div class="editorial-grid">
+                    <article class="main-story">
+                        <header class="story-header">
+                            <h2 class="headline">Data Extraction Setup</h2>
+                            <p class="deck">Select elements and configure extraction options</p>
+                        </header>
+                        
+                        <!-- Element Selection Section -->
+                        <div class="selection-section">
+                            <div class="section-header">
+                                <h3 class="section-title">1. Select Elements</h3>
+                                <div class="section-actions">
+                                    <button id="selectElementsBtn" class="cta-button">
+                                        <span class="icon">⚡</span>
+                                        Select Elements
+                                    </button>
+                                  
+                                </div>
+                            </div>
+                            
+                            <div class="selectors-section">
+                                <div class="section-header">
+                                    <h4 class="subsection-title">Selected Elements</h4>
+                                    <button id="clearAllSelectorsBtn" class="clear-link" style="display: none;">Clear All</button>
+                                </div>
+                                <div id="selectorsList" class="selectors-list">
+                                    <div class="empty-state">
+                                        <p>No elements selected yet</p>
+                                        <small>Click "Select Elements" to begin</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manual Selector Section -->
+                        <div class="manual-selector-section">
+                            <div class="section-header">
+                                <h3 class="section-title">Manual CSS Selectors</h3>
+                                <div class="help-tooltip">
+                                    <span class="help-icon">?</span>
+                                    <div class="help-content">
+                                        <p>Add CSS selectors manually using standard syntax:<br>
+                                        • <code>.class-name</code> for classes<br>
+                                        • <code>#element-id</code> for IDs<br>
+                                        • <code>tag[attribute="value"]</code> for attributes<br>
+                                        • <code>parent > child</code> for complex selectors</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="manual-selector-input">
+                                <div class="input-group">
+                                    <input type="text" id="selectorName" class="field-input" placeholder="Element name (e.g., Title, Price, Image)" maxlength="50">
+                                    <input type="text" id="selectorValue" class="field-input" placeholder="CSS selector (e.g., .product-title, #price, img.thumbnail)" maxlength="200">
+                                    <button id="addSelectorBtn" class="cta-button">
+                                        <span class="icon">➕</span>
+                                        Add
+                                    </button>
+                                </div>
+                                <div class="field-hint">
+                                    Combine visual selection with manual selectors for maximum precision
+                                </div>
+                            </div>
+
+                            <!-- Selector Examples -->
+                            <div class="selector-examples" id="selectorExamples">
+                                <div class="examples-header">
+                                    <h4 class="examples-title">Quick Examples</h4>
+                                    <button class="examples-toggle" id="examplesToggle">
+                                        <span class="icon">▼</span>
+                                    </button>
+                                </div>
+                                <div class="examples-content" id="examplesContent" style="display: none;">
+                                    <div class="example-grid">
+                                        <div class="example-item" data-name="Title" data-selector="h1, h2, .title, .heading">
+                                            <div class="example-name">Title</div>
+                                            <div class="example-selector">h1, h2, .title, .heading</div>
+                                        </div>
+                                        <div class="example-item" data-name="Price" data-selector=".price, .cost, [data-price]">
+                                            <div class="example-name">Price</div>
+                                            <div class="example-selector">.price, .cost, [data-price]</div>
+                                        </div>
+                                        <div class="example-item" data-name="Link" data-selector="a[href]">
+                                            <div class="example-name">Link</div>
+                                            <div class="example-selector">a[href]</div>
+                                        </div>
+                                        <div class="example-item" data-name="Image" data-selector="img, picture img">
+                                            <div class="example-name">Image</div>
+                                            <div class="example-selector">img, picture img</div>
+                                        </div>
+                                        <div class="example-item" data-name="Description" data-selector=".description, .summary, p">
+                                            <div class="example-name">Description</div>
+                                            <div class="example-selector">.description, .summary, p</div>
+                                        </div>
+                                        <div class="example-item" data-name="Button" data-selector="button, .btn, .button">
+                                            <div class="example-name">Button</div>
+                                            <div class="example-selector">button, .btn, .button</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Container Selector Section -->
+                        <div class="container-section">
+                            <div class="section-header">
+                                <h3 class="section-title">2. Container Selector (Optional)</h3>
+                                <div class="help-tooltip">
+                                    <span class="help-icon">?</span>
+                                    <div class="help-content">
+                                        <p>Specify a container element to extract items relative to it. This helps avoid duplicates and ensures each item represents one logical entity (e.g., one product card).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="container-input-group">
+                                <input type="text" id="containerSelector" class="field-input" placeholder="e.g., .product-card, .item, [data-item]">
+                                <button id="selectContainerBtn" class="cta-button" style="background: var(--muted-gray);">
+                                    <span class="icon">🎯</span>
+                                    Select Container
+                                </button>
+                            </div>
+                            <div class="field-hint">
+                                Leave empty to extract all matching elements from the page
+                            </div>
+                        </div>
+                        
+                        <!-- Extraction Options Section -->
+                        <div class="extraction-options-section">
+                            <div class="section-header">
+                                <h3 class="section-title">3. Extraction Options</h3>
+                            </div>
+                            
+                            <div class="options-grid">
+                                <div class="option-group">
+                                    <h4 class="option-title">Data Types</h4>
+                                    <div class="option-toggles">
+                                        <label class="toggle-item">
+                                            <input type="checkbox" id="extractText" checked>
+                                            <span class="toggle-label">Text Content</span>
+                                        </label>
+                                        <label class="toggle-item">
+                                            <input type="checkbox" id="extractImages">
+                                            <span class="toggle-label">Images</span>
+                                        </label>
+                                        <label class="toggle-item">
+                                            <input type="checkbox" id="extractLinks">
+                                            <span class="toggle-label">Links</span>
+                                        </label>
+                                        <label class="toggle-item">
+                                            <input type="checkbox" id="extractStructured">
+                                            <span class="toggle-label">Structured Data</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="option-group">
+                                    <h4 class="option-title">Extraction Mode</h4>
+                                    <div class="option-toggles">
+                                        <label class="toggle-item">
+                                            <input type="checkbox" id="deepScan">
+                                            <span class="toggle-label">Deep Scan (iframes/shadow DOM)</span>
+                                        </label>
+                                        <label class="toggle-item">
+                                            <input type="checkbox" id="visibleOnly" checked>
+                                            <span class="toggle-label">Visible Elements Only</span>
+                                        </label>
+                                        <label class="toggle-item">
+                                            <input type="checkbox" id="excludeDuplicates" checked>
+                                            <span class="toggle-label">Exclude Duplicates</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Start Extraction Section -->
+                        <div class="extraction-controls-section">
+                            <div class="section-header">
+                                <h3 class="section-title">4. Start Extraction</h3>
+                            </div>
+                            
+                            <div class="extraction-summary" id="extractionSummary" style="display: none;">
+                                <div class="summary-card">
+                                    <h4 class="summary-title">Extraction Summary</h4>
+                                    <div class="summary-items">
+                                        <div class="summary-item">
+                                            <span class="summary-label">Elements Selected:</span>
+                                            <span class="summary-value" id="summaryElementCount">0</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Container:</span>
+                                            <span class="summary-value" id="summaryContainer">None</span>
+                                        </div>
+                                        <div class="summary-item">
+                                            <span class="summary-label">Data Types:</span>
+                                            <span class="summary-value" id="summaryDataTypes">Text</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="scraper-controls">
+                                <button id="extractionBtn" class="cta-button" disabled>
+                                    <span class="icon" id="extractionBtnIcon">▶</span>
+                                    <span id="extractionBtnText">Start Extraction</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Extraction progress (hidden by default) -->
+                        <div id="extractionProgress" class="progress-container" style="display: none;">
+                            <div class="progress-header">
+                                <div class="progress-icon">
+                                    <div class="scanning-indicator"></div>
+                                </div>
+                                <div class="progress-title" id="extractionTitle">Extracting Data</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="extractionFill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-status" id="extractionStatus">Processing elements...</div>
+                        </div>
+                        
+
+                        <div class="scraper-status">
+                            <div id="statusMessage" class="status-message"></div>
+                        </div>
+
+                        <!-- Error container (hidden by default) -->
+                        <div id="errorContainer" class="error-container" style="display: none;">
+                            <div class="error-icon">⚠</div>
+                            <div class="error-title" id="errorTitle">Extraction Failed</div>
+                            <div class="error-message" id="errorMessage">An error occurred during extraction.</div>
+                            <div class="error-actions">
+                                <button id="retryBtn" class="cta-button">
+                                    <span class="icon">↻</span>
+                                    Retry
+                                </button>
+                                <button id="dismissErrorBtn" class="cta-button" style="background: var(--muted-gray);">
+                                    Dismiss
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Extraction Complete Card (hidden by default) -->
+                        <div id="completionCard" class="completion-card" style="display: none;">
+                            <div class="completion-header">
+                                <div class="completion-icon">✅</div>
+                                <div class="completion-title">Extraction Complete!</div>
+                            </div>
+                            <div class="completion-stats">
+                                <div class="completion-stat">
+                                    <div class="completion-stat-number" id="extractedItemsCount">0</div>
+                                    <div class="completion-stat-label">Items Extracted</div>
+                                </div>
+                                <div class="completion-stat">
+                                    <div class="completion-stat-number" id="extractedElementsCount">0</div>
+                                    <div class="completion-stat-label">Elements Processed</div>
+                                </div>
+                            </div>
+                            <div class="completion-message">
+                                <p>Your report is ready! You can view and manage your extracted data in the reports page.</p>
+                            </div>
+                            <div class="completion-actions">
+                                <button id="viewReportBtn" class="cta-button">
+                                    <span class="icon">📊</span>
+                                    View Report
+                                </button>
+                                <button id="newExtractionBtn" class="cta-button" style="background: var(--muted-gray);">
+                                    <span class="icon">🔄</span>
+                                    New Extraction
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Collapsible Log Drawer -->
+                        <div class="log-drawer" id="logDrawer">
+                            <div class="log-header" id="logHeader">
+                                <h4 class="log-title">Technical Details</h4>
+                                <button class="log-toggle" id="logToggle">
+                                    <span class="icon">▼</span>
+                                </button>
+                            </div>
+                            <div class="log-content" id="logContent" style="display: none;">
+                                <div class="log-summary">
+                                    <div class="log-item">
+                                        <span class="log-label">Elements Found:</span>
+                                        <span id="logElementsFound" class="log-value">0</span>
+                                    </div>
+                                    <div class="log-item">
+                                        <span class="log-label">Data Extracted:</span>
+                                        <span id="logDataExtracted" class="log-value">0</span>
+                                    </div>
+                                    <div class="log-item">
+                                        <span class="log-label">Errors:</span>
+                                        <span id="logErrors" class="log-value">0</span>
+                                    </div>
+                                </div>
+                                <div class="log-messages" id="logMessages">
+                                    <!-- Log messages will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="sub-page settings-page">
+                <div class="editorial-grid">
+                    <article class="main-story">
+                        <header class="story-header">
+                            <h2 class="headline">Settings</h2>
+                            <p class="deck">Customize your scraping experience</p>
+                        </header>
+                        
+                        <form id="settingsForm" class="editorial-form">
+                            <div class="settings-section">
+                                <h3 class="section-title">Scraping Preferences</h3>
+                                
+                                <div class="form-field">
+                                    <label for="chunkSize" class="field-label">Chunk Size</label>
+                                    <select id="chunkSize" name="chunkSize" class="field-input">
+                                        <option value="500">500 items</option>
+                                        <option value="1000" selected>1000 items (recommended)</option>
+                                        <option value="2000">2000 items</option>
+                                        <option value="3000">3000 items</option>
+                                        <option value="5000">5000 items (max)</option>
+                                    </select>
+                                    <small class="field-hint">Number of items to save in each chunk. Smaller chunks save more frequently but may be slower.</small>
+                                </div>
+                                
+                                <div class="form-field">
+                                    <label class="field-label">
+                                        <input type="checkbox" id="autoSave" name="autoSave" checked>
+                                        Auto-save reports
+                                    </label>
+                                    <small class="field-hint">Automatically save reports when scraping completes</small>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-section">
+                                <h3 class="section-title">Notifications</h3>
+                                
+                                <div class="form-field">
+                                    <label class="field-label">
+                                        <input type="checkbox" id="extensionNotifications" name="extensionNotifications" checked>
+                                        Extension notifications
+                                    </label>
+                                    <small class="field-hint">Show toast notifications in the extension</small>
+                                </div>
+                                
+                                <div class="form-field">
+                                    <label class="field-label">
+                                        <input type="checkbox" id="emailNotifications" name="emailNotifications" disabled>
+                                        Email notifications (future feature)
+                                    </label>
+                                    <small class="field-hint">Receive email notifications (future feature)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="cta-button">Save Settings</button>
+                                <button type="button" id="backToDashboard" class="cta-button" style="background: var(--muted-gray);">Back to Dashboard</button>
+                            </div>
+                        </form>
+                    </article>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-line"></div>
+                <div class="footer-text">OnPage.dev • Intelligent Web Extraction</div>
+            </div>
+        </footer>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="loading-overlay" style="display: none;">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p class="loading-text">Processing...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="services/AuthService.js"></script>
+    <script src="services/ReportService.js"></script>
+    <script src="services/ScrapingService.js"></script>
+    <script src="services/ToastService.js"></script>
+    <script src="utils/CSVUtils.js"></script>
+    <script src="utils/JSONUtils.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
