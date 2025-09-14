@@ -1,2 +1,0 @@
-JWT_SECRET=ABCD1234
-MONGODB_URI=mongodb://localhost:27017/onpage
