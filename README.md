@@ -11,7 +11,19 @@ A **Chrome extension for web scraping** with visual element selection and data e
 - **Smart scraping** – auto-scroll and detect dynamic content  
 - **Data export** – CSV and JSON support  
 - **Flexible storage** – save data in the cloud or locally  
-- **Modern Chrome extension** – Manifest V3 compatible  
+- **Modern Chrome extension** – Manifest V3 compatible
+---
+
+## 📸 Screenshots
+
+### Extension Popup
+![Extension Popup](imgs/extention.png)
+
+### Dashboard
+![Dashboard](imgs/dashboard.png)
+
+### Report View
+![Report](imgs/report.png)
 
 ---
 
@@ -80,3 +92,4 @@ npm start
 ## 📝 License
 
 MIT License
+
